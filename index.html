@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Airloop Invoice &amp; Quotation</title>
+<style>
+:root{--bg:#f3f5f8;--card:#fff;--tx:#14202b;--mut:#64707d;--bd:#d9e0e8;--pri:#0b5ed7;--ptx:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1418;--card:#1a2128;--tx:#e8edf2;--mut:#93a0ad;--bd:#2c3640;--pri:#4c8dff;--ptx:#fff}}
+:root[data-theme="dark"]{--bg:#0f1418;--card:#1a2128;--tx:#e8edf2;--mut:#93a0ad;--bd:#2c3640;--pri:#4c8dff;--ptx:#fff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:14px 14px 0;font-weight:700;font-size:17px}
+nav{display:flex;gap:6px;padding:10px 14px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+nav button{flex:1;padding:10px 4px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;font-size:14px}
+nav button.on{background:var(--pri);color:var(--ptx);border-color:var(--pri)}
+main{padding:0 14px 40px;max-width:720px;margin:auto}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:12px}
+h3{margin:0 0 8px;font-size:15px}
+label{display:block;font-size:12px;color:var(--mut);margin-bottom:8px}
+input,textarea,output{display:block;width:100%;margin-top:3px;padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:16px system-ui,sans-serif}
+output{min-height:40px;font-weight:600}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g4{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(min-width:520px){.g4{grid-template-columns:.8fr .8fr 1fr 1.2fr}}
+.it{border:1px dashed var(--bd);border-radius:10px;padding:8px;margin-bottom:8px}
+.r1{display:flex;justify-content:space-between;align-items:center;color:var(--mut)}
+.b{padding:11px 14px;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);font-size:15px}
+.b.p{background:var(--pri);color:var(--ptx);border-color:var(--pri)}
+.x{background:none;border:0;color:#d33;font-size:18px}
+.lnk{background:none;border:0;color:var(--pri);font-size:13px;padding:2px 0}
+.tot{display:flex;justify-content:space-between;font-size:18px;margin-top:10px}
+.bar{display:flex;gap:8px;flex-wrap:wrap}.bar .b{flex:1}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
+.b.s{padding:8px 6px;font-size:13px}
+.tb{flex-wrap:wrap}.tb .b{min-width:46%}
+#wab{position:fixed;left:10px;right:10px;bottom:14px;background:#128c7e;color:#fff;padding:10px 12px;border-radius:12px;z-index:40;display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:14px}
+#wab[hidden]{display:none}#wab a{color:#fff;font-weight:700}#wab button{background:none;border:0;color:#fff;font-size:18px}
+.tag{font-size:11px;padding:2px 6px;border-radius:6px;background:var(--pri);color:var(--ptx);margin-right:6px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;background:#222;color:#fff;padding:8px 14px;border-radius:20px;font-size:14px;z-index:30}
+#pv{position:fixed;inset:0;background:#8a929b;overflow:auto;z-index:20;padding:10px}
+#pv[hidden],#toast[hidden]{display:none}
+.tb{display:flex;gap:8px;max-width:794px;margin:0 auto 10px}.tb .b{flex:1}
+@page{size:A4;margin:0}
+#sheet{background:#fff;color:#111;width:210mm;min-height:238mm;margin:auto;padding:12mm;font-size:13px;display:flex;flex-direction:column}
+#sheet .sg{margin-top:auto;padding-top:28px;align-self:flex-end;text-align:center;min-width:220px}
+#sheet .fo{font-weight:600;margin-bottom:56px}
+#sheet .ln{border-top:1px solid #111;padding-top:4px}
+#sheet h1{margin:0;font-size:22px}#sheet .ti{font-size:20px;letter-spacing:2px;color:#0b5ed7;text-align:right;font-weight:700}
+#sheet .hd{display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid #0b5ed7;padding-bottom:10px;margin-bottom:12px}
+#sheet .sm{color:#555;white-space:pre-line}
+#sheet .mt{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+#sheet .tw{overflow-x:auto}
+#sheet table{width:100%;border-collapse:collapse;min-width:420px}
+#sheet th{background:#eef2f7;text-align:left}
+#sheet th,#sheet td{border:1px solid #cfd6de;padding:6px;vertical-align:top}
+#sheet .n{text-align:right;white-space:nowrap}
+#sheet .gt td{font-weight:700;background:#f6f8fb}
+#sheet h4{margin:14px 0 3px;font-size:13px}
+@media print{body>*:not(#pv){display:none!important}#pv{position:static;background:none;padding:0}.tb{display:none}#sheet{zoom:1!important;margin:0}:root{padding:0}}
+</style></head><body>
+<header>Airloop Engineering Contracts</header>
+<nav id="nav"></nav>
+<main id="app"></main>
+<div id="pv" hidden></div><div id="toast" hidden></div><div id="wab" hidden></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const E=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const D={co:'Airloop Engineering Contracts',addr:'Kakkanatt Building, Chowannur, Kunnamkulam, Thrissur - 680517',contact:'',cur:'₹',ip:'INV-',in:1,qp:'QT-',qn:1,
+it:'100% payment within 7 days of invoice date.',inn:'Thank you for your business.',
+qt:'50% advance with order, balance on completion.',qnn:'This quotation is valid for 30 days.'};
+let S={set:{},docs:[]};
+try{const o=JSON.parse(localStorage.getItem('alc')||'null');if(o)S=Object.assign(S,o)}catch(e){}
+S.set=Object.assign({},D,S.set);if(!S.set.addr)S.set.addr=D.addr;
+const sv=()=>{try{localStorage.setItem('alc',JSON.stringify(S))}catch(e){}};
+const pad=n=>String(n).padStart(4,'0');
+const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const fmt=n=>Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const tot=d=>d.items.reduce((s,x)=>s+(+x.q||0)*(+x.r||0),0);
+function newDoc(t){const s=S.set,i=t=='i';return{id:null,t,no:i?s.ip+pad(s.in):s.qp+pad(s.qn),date:today(),client:'',caddr:'',ph:'',ref:'',
+items:[{d:'',u:'Nos',q:1,r:''}],terms:i?s.it:s.qt,notes:i?s.inn:s.qnn}}
+let tab='i',cur=null,dr={};
+function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,1800)}
+function go(t){tab=t;if(t=='i'||t=='q')cur=dr[t]||(dr[t]=newDoc(t));render()}
+function render(){
+$('#nav').innerHTML=[['i','Invoice'],['q','Quotation'],['h','Saved'],['s','Settings']].map(([k,v])=>`<button class="${tab==k?'on':''}" onclick="go('${k}')">${v}</button>`).join('');
+const a=$('#app');
+if(tab=='i'||tab=='q')a.innerHTML=form();else if(tab=='h')a.innerHTML=hist();else a.innerHTML=sett();
+if(tab=='i'||tab=='q')upd()}
+function form(){const i=tab=='i',d=cur;return`
+<div class="card"><h3>${i?'New Invoice':'New Quotation'}</h3>
+<div class="g2"><label>${i?'Invoice':'Quotation'} No.<input value="${E(d.no)}" oninput="cur.no=this.value"></label>
+<label>Date<input type="date" value="${d.date}" oninput="cur.date=this.value"></label></div>
+<label>Client name<input value="${E(d.client)}" oninput="cur.client=this.value"></label>
+<label>Client address / site<textarea rows="2" oninput="cur.caddr=this.value">${E(d.caddr)}</textarea></label>
+<label>Client WhatsApp no. (optional, for sharing)<input type="tel" inputmode="tel" value="${E(d.ph)}" oninput="cur.ph=this.value"></label>
+${i?`<label>Quotation / PO No.<input value="${E(d.ref)}" oninput="cur.ref=this.value"></label>`:''}</div>
+<div class="card"><h3>Items</h3><div id="its">${d.items.map(row).join('')}</div>
+<button class="b" onclick="addI()">+ Add item</button>
+<div class="tot"><span>Total</span><b id="tt"></b></div></div>
+<div class="card"><label>Payment terms<textarea rows="3" oninput="cur.terms=this.value">${E(d.terms)}</textarea></label>
+<button class="lnk" onclick="mkDef('terms')">Set as default payment terms</button>
+<label style="margin-top:8px">Notes<textarea rows="3" oninput="cur.notes=this.value">${E(d.notes)}</textarea></label>
+<button class="lnk" onclick="mkDef('notes')">Set as default notes</button></div>
+<div class="bar"><button class="b p" onclick="prev()">Preview / PDF</button><button class="b" onclick="save()">Save</button><button class="b" onclick="nw()">New</button></div>`}
+function row(x,i){return`<div class="it"><div class="r1"><b>Item ${i+1}</b>${cur.items.length>1?`<button class="x" onclick="delI(${i})">✕</button>`:''}</div>
+<textarea rows="2" placeholder="Description" oninput="up(${i},'d',this.value)">${E(x.d)}</textarea>
+<div class="g4"><label>Unit<input value="${E(x.u)}" oninput="up(${i},'u',this.value)"></label>
+<label>Qty<input type="number" inputmode="decimal" value="${E(x.q)}" oninput="up(${i},'q',this.value)"></label>
+<label>Rate<input type="number" inputmode="decimal" value="${E(x.r)}" oninput="up(${i},'r',this.value)"></label>
+<label>Amount<output id="a${i}"></output></label></div></div>`}
+function upd(){cur.items.forEach((x,i)=>{const o=$('#a'+i);if(o)o.textContent=fmt((+x.q||0)*(+x.r||0))});$('#tt').textContent=S.set.cur+' '+fmt(tot(cur))}
+function up(i,k,v){cur.items[i][k]=v;upd()}
+function addI(){cur.items.push({d:'',u:'Nos',q:1,r:''});$('#its').innerHTML=cur.items.map(row).join('');upd()}
+function delI(i){cur.items.splice(i,1);$('#its').innerHTML=cur.items.map(row).join('');upd()}
+function mkDef(k){
+const map={i:{terms:'it',notes:'inn'},q:{terms:'qt',notes:'qnn'}};S.set[map[tab][k]]=cur[k];sv();toast('Saved as default')}
+function save(q){const i=cur.t=='i',s=S.set;
+if(!cur.id){cur.id=Date.now();if(i)s.in++;else s.qn++}
+const c=JSON.parse(JSON.stringify(cur)),k=S.docs.findIndex(d=>d.id==c.id);
+if(k>=0)S.docs[k]=c;else S.docs.push(c);sv();if(!q)toast('Saved')}
+function nw(){dr[tab]=null;cur=dr[tab]=newDoc(tab);render()}
+function hist(){const l=S.docs.slice().sort((a,b)=>b.id-a.id);
+return`<div class="card">${l.length?l.map(d=>`<div class="row" style="flex-wrap:wrap"><div style="flex:1;min-width:0"><span class="tag">${d.t=='i'?'INV':'QT'}</span><b>${E(d.no)}</b><br><small>${E(d.client||'—')} · ${d.date} · ${S.set.cur} ${fmt(tot(d))}</small></div>
+<div class="bar" style="width:100%"><button class="b s" onclick="openD(${d.id})">Open</button><button class="b s" onclick="pdfD(${d.id})">PDF</button><button class="b s" onclick="waD(${d.id})">WhatsApp</button><button class="b s" id="d${d.id}" onclick="delD(${d.id})">Delete</button></div></div>`).join(''):'<p>No saved documents yet.</p>'}</div>`}
+function openD(id){const d=S.docs.find(x=>x.id==id);dr[d.t]=JSON.parse(JSON.stringify(d));go(d.t)}
+function delD(id){const b=$('#d'+id);if(b.dataset.s){S.docs=S.docs.filter(x=>x.id!=id);sv();render()}else{b.dataset.s=1;b.textContent='Sure?'}}
+function sett(){const s=S.set,f=(l,k,n)=>`<label>${l}<input ${n?'type="number" min="1"':''} value="${E(s[k])}" oninput="S.set.${k}=${n?'+this.value||1':'this.value'};sv()"></label>`,
+t=(l,k)=>`<label>${l}<textarea rows="3" oninput="S.set.${k}=this.value;sv()">${E(s[k])}</textarea></label>`;
+return`<div class="card"><h3>Company</h3>${f('Company name','co')}${f('Address (optional)','addr')}${f('Phone / email (optional)','contact')}${f('Currency symbol','cur')}</div>
+<div class="card"><h3>Numbering (auto)</h3><div class="g2">${f('Invoice prefix','ip')}${f('Next invoice no.','in',1)}${f('Quotation prefix','qp')}${f('Next quotation no.','qn',1)}</div></div>
+<div class="card"><h3>Default invoice text</h3>${t('Payment terms','it')}${t('Notes','inn')}</div>
+<div class="card"><h3>Default quotation text</h3>${t('Payment terms','qt')}${t('Notes','qnn')}</div>
+<p style="color:var(--mut);font-size:13px">Defaults apply to new documents. Data is stored in this browser on this device.</p>`}
+function sheet(d){const s=S.set,i=d.t=='i',c=s.cur;
+return`<div class="hd"><div><h1>${E(s.co)}</h1><div class="sm">${E(s.addr)}${s.addr&&s.contact?'\n':''}${E(s.contact)}</div></div><div class="ti">${i?'INVOICE':'QUOTATION'}</div></div>
+<div class="mt"><div><b>Bill to</b><br>${E(d.client)||'—'}<div class="sm">${E(d.caddr)}</div></div>
+<div style="text-align:right"><b>${i?'Invoice':'Quotation'} No:</b> ${E(d.no)}<br><b>Date:</b> ${d.date.split('-').reverse().join('-')}${i&&d.ref?`<br><b>Quotation / PO No:</b> ${E(d.ref)}`:''}</div></div>
+<div class="tw"><table><tr><th>#</th><th>Description</th><th>Unit</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th></tr>
+${d.items.map((x,k)=>`<tr><td>${k+1}</td><td style="white-space:pre-line">${E(x.d)}</td><td>${E(x.u)}</td><td class="n">${E(x.q)}</td><td class="n">${fmt(x.r)}</td><td class="n">${fmt((+x.q||0)*(+x.r||0))}</td></tr>`).join('')}
+<tr class="gt"><td colspan="5" class="n">Total (${E(c)})</td><td class="n">${fmt(tot(d))}</td></tr></table></div>
+${d.terms.trim()?`<h4>Payment Terms</h4><div class="sm">${E(d.terms)}</div>`:''}
+${d.notes.trim()?`<h4>Notes</h4><div class="sm">${E(d.notes)}</div>`:''}
+${i?`<div class="sg"><div class="fo">For ${E(s.co)}</div><div class="ln">Authorised Signatory</div></div>`:''}`}
+const fnb=d=>(d.no||'document').replace(/[\\/:*?"<>|]/g,'-');
+const getD=id=>id?S.docs.find(x=>x.id==id):cur;
+function pr(){const t=document.title;document.title=fnb(cur);window.print();setTimeout(()=>document.title=t,1500)}
+async function mkPdf(d){
+if(!window.html2pdf)throw 0;
+const el=document.createElement('div');el.id='sheet';el.innerHTML=sheet(d);
+const w=document.createElement('div');w.style.cssText='position:fixed;left:-10000px;top:0';w.appendChild(el);document.body.appendChild(w);
+try{return await html2pdf().set({margin:0,image:{type:'jpeg',quality:.95},html2canvas:{scale:2,scrollX:0,scrollY:0,windowWidth:794},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(el).outputPdf('blob')}finally{w.remove()}}
+async function saveBlob(b,d){const dl=window.claude&&await claude.use('downloads');if(!dl)throw 1;await dl.save({filename:fnb(d)+'.pdf',data:b})}
+async function pdfD(id){const d=getD(id);toast('Preparing PDF…');
+try{const b=await mkPdf(d);await saveBlob(b,d);toast('PDF saved')}catch(e){if(e&&e.code=='declined')return;toast(e===1?'Download not available here':'Could not create PDF')}}
+function waLink(d){let p=(d.ph||'').replace(/\D/g,'');if(p.length==10)p='91'+p;
+const m=`${d.t=='i'?'Invoice':'Quotation'} ${d.no} from ${S.set.co}. Total: ${S.set.cur} ${fmt(tot(d))}`;
+return'https://wa.me/'+p+'?text='+encodeURIComponent(m)}
+async function waD(id){const d=getD(id);toast('Preparing PDF…');let b;
+try{b=await mkPdf(d)}catch(e){toast('Could not create PDF');return}
+const f=new File([b],fnb(d)+'.pdf',{type:'application/pdf'});
+try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:d.no});return}}catch(e){if(e&&e.name=='AbortError')return}
+try{await saveBlob(b,d)}catch(e){if(e&&e.code=='declined')return;toast('Could not save PDF');return}
+const w=$('#wab');w.innerHTML=`<span>PDF saved. Open WhatsApp and attach it.</span><a href="${waLink(d)}" target="_blank" rel="noopener">Open WhatsApp</a><button onclick="this.parentNode.hidden=true">✕</button>`;w.hidden=false}
+function prev(){save(true);$('#pv').innerHTML=`<div class="tb"><button class="b p s" onclick="pr()">Print</button><button class="b s" onclick="pdfD()">Download PDF</button><button class="b s" onclick="waD()">WhatsApp</button><button class="b s" onclick="$('#pv').hidden=true">Close</button></div><div id="sheet">${sheet(cur)}</div>`;$('#pv').hidden=false;$('#sheet').style.zoom=Math.min(1,(innerWidth-20)/794)}
+go('i');
+</script></body></html>
